@@ -2,6 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 
 var LoadingView = require('./components/LoadingView');
+var HomeView = require('./components/HomeView');
 
 var App = React.createClass({
 
@@ -34,7 +35,7 @@ var App = React.createClass({
     })
   },
 
-  LoadingBlock() {
+  RoutingBlock() {
     if (this.state.isLoading) {
       return (
         <LoadingView 
@@ -45,9 +46,7 @@ var App = React.createClass({
         )
     } else {
       return (
-        <div>
-          Yay!
-        </div>
+        <HomeView strikes={this.state.allData.strike}/>
         )
     }
   },
@@ -55,7 +54,7 @@ var App = React.createClass({
   render: function render() {
     return (
       <div>
-        { this.LoadingBlock() }
+        { this.RoutingBlock() }
       </div>
       )
   }
