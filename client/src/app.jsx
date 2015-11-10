@@ -10,7 +10,22 @@ var App = React.createClass({
     return {
       isLoading: true,
       newDataReceived: false,
+      showModal: false,
+      selectedStrike: 0
     }
+  },
+
+  openModal: function openModal(index) {
+    this.setState({
+      showModal: true,
+      selectedStrike: index
+    })
+  },
+
+  closeModal: function closeModal() {
+    this.setState({
+      showModal: false
+    })
   },
 
   componentWillMount: function componentWillMount() {
@@ -46,7 +61,12 @@ var App = React.createClass({
         )
     } else {
       return (
-        <HomeView strikes={this.state.allData.strike}/>
+        <HomeView 
+          strikes={this.state.allData.strike}
+          openModal={this.openModal}
+          closeModal={this.closeModal}
+          showModal={this.state.showModal}
+          selectedStrike={this.state.selectedStrike}/>
         )
     }
   },

@@ -6,10 +6,20 @@ body{
   padding-right: 5px !important;
 }
 
+/* Modal style */
+.modal{
+  position: fixed;
+  top: 30%;
+}
+
+.modal-body{
+  height: 70%;
+  overflow-y: auto;
+}
+
 
 /* Loading page styles */
 .loading {
-  width: 80%;
   margin: auto;
   display: block;
   text-align: center;

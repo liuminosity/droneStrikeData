@@ -2,6 +2,10 @@ var React = require('react');
 
 var Map = React.createClass({
 
+  openModal: function openModal(index) {
+    this.props.openModal(index);
+  },
+
   getDefaultProps: function () {
     return {
       initialZoom: 4,
@@ -147,7 +151,7 @@ var Map = React.createClass({
           })
           // console.log('this is i', i);
           // _this.clearTravelPlan(i);
-          // _this.openModal(i); //pass in the AirPort id here.
+          _this.openModal(i); //pass in the AirPort id here.
           // infowindow.setContent("<ul><li>Latitude " + allPoints[i].latitude + "</li><li>Longitude " + allPoints[i].longitude + "</li></ul>");
           // infowindow.open(map, marker);
         };
