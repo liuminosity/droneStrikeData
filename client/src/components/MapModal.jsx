@@ -1,7 +1,6 @@
 var React = require('react');
 var Modal = require('react-bootstrap').Modal;
 var ChartistGraph = require ('react-chartist');
-// var Button = require('react-bootstrap').Button;
 
 var MapModal = React.createClass({
 
@@ -11,26 +10,57 @@ var MapModal = React.createClass({
       <div> [No summary found for this strike] </div>;
   },
 
+  chartBlock: function chartBlock() {
+    var _this = this;
+    
+
+    if (this.props.chartDataReady) {
+      var data = {
+        labels: ['<1000m', '<5000m', '<10000m'],
+        series: [
+          [this.props.strikes[this.props.selectedStrike].nearbyStrikes.strikesWithin1000m,
+          this.props.strikes[this.props.selectedStrike].nearbyStrikes.strikesWithin5000m,
+          this.props.strikes[this.props.selectedStrike].nearbyStrikes.strikesWithin10000m]
+        ]
+      };
+
+      var options = {
+        high: Math.max(this.props.strikes[this.props.selectedStrike].nearbyStrikes.strikesWithin10000m, 5),
+        low: 0,
+
+        onlyInteger: true,
+        height: '200px',
+        axisY: {
+            onlyInteger: true
+          }
+      };
+
+      var type = 'Bar'
+
+      return <ChartistGraph 
+        data={data} 
+        options={options} 
+        type={type} />
+    } else if (this.props.showModal) {
+      $.ajax({
+        url: '/analyzeData',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          strikes: _this.props.strikes,
+          selectedStrike: _this.props.selectedStrike
+        }),
+        success: function success(data) {
+          _this.props.dataReceived({strike: data});
+        }
+      });
+      return <div style={{'marginLeft':'auto', 'marginRight':'auto', 'width':'420px'}}><img src="http://www.cuisson.co.uk/templates/cuisson/supersize/slideshow/img/progress.BAK-FOURTH.gif" >  </img></div>;
+    }
+  },
+
   render: function render() {
 
-    var data = {
-      labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'W10'],
-      series: [
-        [1, 2, 4, 8, 6, -2, -1, -4, -6, -2]
-      ]
-    };
-
-    var options = {
-      high: 10,
-      low: -10,
-      axisX: {
-        labelInterpolationFnc: function(value, index) {
-          return index % 2 === 0 ? value : null;
-        }
-      }
-    };
-
-    var type = 'Bar'
+    
 
     console.log('sup', this.props.selectedStrike);
     return (
@@ -41,7 +71,7 @@ var MapModal = React.createClass({
           </Modal.Header>
           <Modal.Body>
             { this.strikeSummary() }
-            <ChartistGraph data={data} options={options} type={type} />
+            { this.chartBlock() }
           
           </Modal.Body>
         </Modal>

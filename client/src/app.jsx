@@ -11,7 +11,8 @@ var App = React.createClass({
       isLoading: true,
       newDataReceived: false,
       showModal: false,
-      selectedStrike: 0
+      selectedStrike: 0,
+      chartDataReady: false
     }
   },
 
@@ -25,6 +26,12 @@ var App = React.createClass({
   closeModal: function closeModal() {
     this.setState({
       showModal: false
+    })
+  },
+
+  updateData: function updateData(data) {
+    this.setState({
+      allData: data
     })
   },
 
@@ -50,6 +57,13 @@ var App = React.createClass({
     })
   },
 
+  dataReceived: function dataReceived(data) {
+    this.setState({
+      chartDataReady: true,
+      allData: data
+    })
+  },
+
   RoutingBlock() {
     if (this.state.isLoading) {
       return (
@@ -66,7 +80,10 @@ var App = React.createClass({
           openModal={this.openModal}
           closeModal={this.closeModal}
           showModal={this.state.showModal}
-          selectedStrike={this.state.selectedStrike}/>
+          selectedStrike={this.state.selectedStrike}
+          chartDataReady={this.state.chartDataReady}
+          dataReceived={this.dataReceived}
+          updateData={this.updateData}/>
         )
     }
   },
