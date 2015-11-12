@@ -4,11 +4,25 @@ var ChartistGraph = require ('react-chartist');
 
 var MapModal = React.createClass({
 
+  //displays a title if it exists, else doesn't render anything
+  strikeTitle: function strikeTitle() {
+    return this.props.strikes[this.props.selectedStrike].narrative ? 
+      <h1> {this.props.strikes[this.props.selectedStrike].narrative} </h1> :
+      <div/>;
+  },
+
   //displays summary about the strike, or returns a "no summary found" message
   strikeSummary: function strikeSummary() {
     return this.props.strikes[this.props.selectedStrike].bij_summary_short ? 
       <div> {this.props.strikes[this.props.selectedStrike].bij_summary_short} </div> :
       <div> [No summary found for this strike] </div>;
+  },
+
+  //displays a link if it exists, otherwise doesn't display anything
+  linkBlock: function linkBlock() {
+    return this.props.strikes[this.props.selectedStrike].bij_link ?
+      <a href={this.props.strikes[this.props.selectedStrike].bij_link} target="_blank">Read more here</a> :
+      <div> [No external link found for this strike] </div>;
   },
 
   //renders the chartblock, which if the chart data is ready, displays a chart, otherwise sends off an ajax request to the server and displays a loading gif
@@ -75,7 +89,9 @@ var MapModal = React.createClass({
             <Modal.Title style={{'marginLeft':'auto', 'marginRight':'auto', 'width':'400px', 'textAlign':'center'}}>Data about this drone strike</Modal.Title>
           </Modal.Header>
           <Modal.Body>
+            { this.strikeTitle() }
             { this.strikeSummary() }
+            { this.linkBlock() }
             { this.chartBlock() }
           
           </Modal.Body>

@@ -23,6 +23,7 @@ var App = React.createClass({
       url:'http://api.dronestre.am/data',
       dataType: 'jsonp',
       success: function success(data) {
+        console.log(data);
         _this.setState({
           newDataReceived: true,
           allData: data
