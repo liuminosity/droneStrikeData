@@ -4,16 +4,18 @@ var ChartistGraph = require ('react-chartist');
 
 var MapModal = React.createClass({
 
+  //displays summary about the strike, or returns a "no summary found" message
   strikeSummary: function strikeSummary() {
     return this.props.strikes[this.props.selectedStrike].bij_summary_short ? 
       <div> {this.props.strikes[this.props.selectedStrike].bij_summary_short} </div> :
       <div> [No summary found for this strike] </div>;
   },
 
+  //renders the chartblock, which if the chart data is ready, displays a chart, otherwise sends off an ajax request to the server and displays a loading gif
   chartBlock: function chartBlock() {
     var _this = this;
-    
 
+    //if chart data is ready, load the data into the chart
     if (this.props.chartDataReady) {
       var data = {
         labels: ['<1000m', '<5000m', '<10000m'],
@@ -41,6 +43,10 @@ var MapModal = React.createClass({
         data={data} 
         options={options} 
         type={type} />
+
+    //If the data is not ready, get the data. Please keep in mind that actually sending off an ajax request is not necessary at all and in this application, probably overkill.
+    //I wanted to do this to 1. allow a server (presumably not the "client's" computer) to process the request asynchronously to allow for a faster UX, and 2. to demonstrate
+    //that I can handle async/AJAX requests on the server within React.
     } else if (this.props.showModal) {
       $.ajax({
         url: '/analyzeData',
@@ -54,15 +60,14 @@ var MapModal = React.createClass({
           _this.props.dataReceived({strike: data});
         }
       });
-      return <div style={{'marginLeft':'auto', 'marginRight':'auto', 'width':'420px'}}><img src="http://www.cuisson.co.uk/templates/cuisson/supersize/slideshow/img/progress.BAK-FOURTH.gif" >  </img></div>;
+      return 
+        <div style={{'marginLeft':'auto', 'marginRight':'auto', 'width':'420px'}}>
+          <img src="http://www.cuisson.co.uk/templates/cuisson/supersize/slideshow/img/progress.BAK-FOURTH.gif" />
+        </div>;
     }
   },
 
   render: function render() {
-
-    
-
-    console.log('sup', this.props.selectedStrike);
     return (
       <div>  
         <Modal show={this.props.showModal} onHide={this.props.closeModal} backdrop={true} bsSize={'large'}>

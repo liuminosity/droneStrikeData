@@ -2,10 +2,12 @@ var React = require('react');
 
 var Map = React.createClass({
 
+  //opens the modal for selected index
   openModal: function openModal(index) {
     this.props.openModal(index);
   },
 
+  //Default options for the map
   getDefaultProps: function () {
     return {
       initialZoom: 4,
@@ -14,6 +16,7 @@ var Map = React.createClass({
     };
   },
 
+  //Render the Google Map. I've put this in componentDidMount so that the map would only render once.
   componentDidMount: function () {
     var _this = this;
     var customMapType = new google.maps.StyledMapType([
@@ -130,8 +133,6 @@ var Map = React.createClass({
       })
     };
 
-    // console.log('this is allPoints', allPoints);
-
     for(var i = 0; i < allPoints.length; i++){
       var myLatlng = new google.maps.LatLng(allPoints[i].latitude, allPoints[i].longitude);
       var iconImage = '../explosion.png';
@@ -140,8 +141,9 @@ var Map = React.createClass({
         map:map,
         icon: iconImage
       })
+      //upon click, the map recenters on the strike that you have selected
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        var temp = new google.maps.LatLng(allPoints[i].latitude, allPoints[i].longitude);
+        var temp = new google.maps.LatLng(parseInt(allPoints[i].latitude)-1, allPoints[i].longitude);
         return function() {
           map.setOptions({
             options: {
@@ -149,11 +151,8 @@ var Map = React.createClass({
               zoom: 8
             }
           })
-          // console.log('this is i', i);
-          // _this.clearTravelPlan(i);
-          _this.openModal(i); //pass in the AirPort id here.
-          // infowindow.setContent("<ul><li>Latitude " + allPoints[i].latitude + "</li><li>Longitude " + allPoints[i].longitude + "</li></ul>");
-          // infowindow.open(map, marker);
+
+          _this.openModal(i); 
         };
       })(marker, i));
     }

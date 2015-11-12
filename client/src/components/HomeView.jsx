@@ -17,8 +17,7 @@ var HomeView = React.createClass({
           showModal={this.props.showModal}
           selectedStrike={this.props.selectedStrike}
           chartDataReady={this.props.chartDataReady}
-          dataReceived={this.props.dataReceived}
-          updateData={this.props.updateData}/>
+          dataReceived={this.props.dataReceived}/>
       </div>
       )
   }

@@ -13,6 +13,8 @@ var LoadingView = React.createClass({
         )
     } else {
       var _this = this;
+
+      //Please note this setTimeout is only here to delay the screen load (more just for aesthetics!)
       setTimeout(function() {
         _this.props.completeLoading();
       }, 1000)

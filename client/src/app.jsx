@@ -16,32 +16,13 @@ var App = React.createClass({
     }
   },
 
-  openModal: function openModal(index) {
-    this.setState({
-      showModal: true,
-      selectedStrike: index
-    })
-  },
-
-  closeModal: function closeModal() {
-    this.setState({
-      showModal: false
-    })
-  },
-
-  updateData: function updateData(data) {
-    this.setState({
-      allData: data
-    })
-  },
-
+  //Sends the ajax request to the drone strike API
   componentWillMount: function componentWillMount() {
     var _this = this;
     $.ajax({
       url:'http://api.dronestre.am/data',
       dataType: 'jsonp',
       success: function success(data) {
-        console.log('yay', data);
         _this.setState({
           newDataReceived: true,
           allData: data
@@ -50,6 +31,26 @@ var App = React.createClass({
     })
   },
 
+  /**************************************************
+  * These are reducer functions that only alter state
+  **************************************************/
+
+  //Sets the modal to show, and sets the selected one to index (effectively opening the modal for drone strike with index number "index")
+  openModal: function openModal(index) {
+    this.setState({
+      showModal: true,
+      selectedStrike: index
+    })
+  },
+
+  //closes the modal by setting the showModal state to false
+  closeModal: function closeModal() {
+    this.setState({
+      showModal: false
+    })
+  },
+
+  //Completes the loading, called after the images have been loaded.
   completeLoading: function completeLoading() {
     this.setState({
       newDataReceived: false,
@@ -57,6 +58,7 @@ var App = React.createClass({
     })
   },
 
+  //Called upon receiving the server data with distance analysis data (NOT from the drone strike API)
   dataReceived: function dataReceived(data) {
     this.setState({
       chartDataReady: true,
@@ -64,6 +66,11 @@ var App = React.createClass({
     })
   },
 
+  /**************************************************
+  * These are functions that return blocks of XML to be rendered in the App component
+  **************************************************/
+
+  //This RoutingBlock renders either the loading page or the homeview. Additional views would probably be added here
   RoutingBlock() {
     if (this.state.isLoading) {
       return (
@@ -82,8 +89,7 @@ var App = React.createClass({
           showModal={this.state.showModal}
           selectedStrike={this.state.selectedStrike}
           chartDataReady={this.state.chartDataReady}
-          dataReceived={this.dataReceived}
-          updateData={this.updateData}/>
+          dataReceived={this.dataReceived}/>
         )
     }
   },
