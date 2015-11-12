@@ -1,7 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
-
 var app = express();
 
 app.use(express.static(__dirname + '/../client'));
@@ -9,7 +8,7 @@ app.use(express.static(__dirname + '/../client'));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
-
+//endpoint that finds all the nearby strikes for each strike, and sends back a modified object with a new "nearbyStrikes" object tied to each strike
 app.post('/analyzeData', function (req, res) {
   var strikes = req.body.strikes;
   findNearbyStrikes(strikes);
@@ -19,6 +18,7 @@ app.post('/analyzeData', function (req, res) {
 
 app.listen(3000);
 
+//helper function that calculates all of the nearby strikes for each strike
 var findNearbyStrikes = function findNearbyStrikes(strikes) {
   for (var i = 0; i < strikes.length; i++) {
     var strikesWithin10000m = 0;
@@ -47,9 +47,6 @@ var findNearbyStrikes = function findNearbyStrikes(strikes) {
     }
   }
 }
-
-
-
 
 //implemented from https://en.wikipedia.org/wiki/Great-circle_distance
 //returns distance in km
