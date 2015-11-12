@@ -13,11 +13,11 @@
 ##Navigating the files:
 ```
 - /client
-  - /src
+  - /src <- source files for client, compiled into main.js
     - /components <- all the sub components here
     - app.jsx <- Parent component here
-  - index.html <- what the server serves as a static file. Starting point for client viles
-  - main.js <- consolidated file of all client code, is served by index.html. don't open
+  - index.html <- what the server serves as a static file. Starting point for client
+  - main.js <- compiled/consolidated file of all client code, is served by index.html. don't open
   - style.css <- styling
 - server
   - server.js <- starts the local server
